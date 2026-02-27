@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandazi Sales Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- Login Page -->
+    <div id="login-page" class="page">
+      <div class="login-container">
+        <div class="login-card">
+          <h1>Mandazi Sales Tracker</h1>
+          <p class="subtitle">Login to your account</p>
+          <form id="login-form">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" placeholder="Enter username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" placeholder="Enter password" required>
+            </div>
+            <div id="login-error" class="error-message"></div>
+            <button type="submit" class="btn btn-primary btn-full">Login</button>
+          </form>
+          <div class="default-credentials">
+            <p>Default credentials:</p>
+            <p>Username: <strong>seller</strong></p>
+            <p>Password: <strong>seller123</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page hidden">
+      <header class="header">
+        <div class="header-content">
+          <h1>Mandazi Sales Tracker</h1>
+          <button id="logout-btn" class="btn btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">Total Sales</p>
+              <p class="stat-value" id="total-sales">KSh 0.00</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">Total Paid</p>
+              <p class="stat-value green" id="total-paid">KSh 0.00</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon red">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">Total Unpaid</p>
+              <p class="stat-value red" id="total-unpaid">KSh 0.00</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-label">Number of Sales</p>
+              <p class="stat-value" id="total-count">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+          <button id="btn-record-sale" class="btn btn-primary btn-large">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Record Sale
+          </button>
+          <button id="btn-view-sales" class="btn btn-secondary btn-large">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            View All Sales
+          </button>
+          <button id="btn-view-unpaid" class="btn btn-outline btn-large">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            View Unpaid Sales
+          </button>
+        </div>
+
+        <!-- Recent Sales -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Recent Sales</h2>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table id="recent-sales-table">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-sales-body">
+                  <!-- Dynamic content -->
+                </tbody>
+              </table>
+            </div>
+            <p id="no-recent-sales" class="empty-message hidden">No sales recorded yet</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Record Sale Page -->
+    <div id="record-sale-page" class="page hidden">
+      <header class="header">
+        <div class="header-content">
+          <button id="back-from-record" class="btn btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back
+          </button>
+          <h1>Record New Sale</h1>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="card max-width-md">
+          <div class="card-body">
+            <div id="record-error" class="error-message"></div>
+            <div id="record-success" class="success-message"></div>
+            <form id="record-sale-form">
+              <div class="form-group">
+                <label for="customer-name">Customer Name</label>
+                <input type="text" id="customer-name" placeholder="Enter customer name" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="quantity">Quantity</label>
+                  <input type="number" id="quantity" min="1" placeholder="Number of mandazi" required>
+                </div>
+                <div class="form-group">
+                  <label for="price-per-unit">Price Per Unit (KSh)</label>
+                  <input type="number" id="price-per-unit" min="1" step="0.01" placeholder="Price per mandazi" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Total Amount</label>
+                <div class="total-display">
+                  <span id="total-amount">KSh 0.00</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="payment-status">Payment Status</label>
+                <select id="payment-status" required>
+                  <option value="Paid">Paid</option>
+                  <option value="Not Paid">Not Paid</option>
+                </select>
+              </div>
+              <div class="form-actions">
+                <button type="button" id="cancel-record" class="btn btn-outline">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Save Sale
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- View All Sales Page -->
+    <div id="view-sales-page" class="page hidden">
+      <header class="header">
+        <div class="header-content">
+          <button id="back-from-sales" class="btn btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back
+          </button>
+          <h1>All Sales</h1>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="card">
+          <div class="card-body">
+            <div id="sales-error" class="error-message"></div>
+            <div class="table-container">
+              <table id="all-sales-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="all-sales-body">
+                  <!-- Dynamic content -->
+                </tbody>
+              </table>
+            </div>
+            <p id="no-sales" class="empty-message hidden">No sales recorded yet</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- View Unpaid Sales Page -->
+    <div id="view-unpaid-page" class="page hidden">
+      <header class="header">
+        <div class="header-content">
+          <button id="back-from-unpaid" class="btn btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back
+          </button>
+          <h1>Unpaid Sales</h1>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="card">
+          <div class="card-body">
+            <div id="unpaid-error" class="error-message"></div>
+            <div id="unpaid-success" class="success-message"></div>
+            <div class="table-container">
+              <table id="unpaid-sales-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="unpaid-sales-body">
+                  <!-- Dynamic content -->
+                </tbody>
+              </table>
+            </div>
+            <div id="no-unpaid" class="empty-message hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="success-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <p>No unpaid sales! All payments are up to date.</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Edit Sale Page -->
+    <div id="edit-sale-page" class="page hidden">
+      <header class="header">
+        <div class="header-content">
+          <button id="back-from-edit" class="btn btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back
+          </button>
+          <h1>Edit Sale</h1>
+          <div></div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="card max-width-md">
+          <div class="card-body">
+            <div id="edit-error" class="error-message"></div>
+            <div id="edit-success" class="success-message"></div>
+            <form id="edit-sale-form">
+              <input type="hidden" id="edit-sale-id">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="edit-quantity">Quantity</label>
+                  <input type="number" id="edit-quantity" min="1" placeholder="Number of mandazi" required>
+                </div>
+                <div class="form-group">
+                  <label for="edit-price-per-unit">Price Per Unit (KSh)</label>
+                  <input type="number" id="edit-price-per-unit" min="1" step="0.01" placeholder="Price per mandazi" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Total Amount</label>
+                <div class="total-display">
+                  <span id="edit-total-amount">KSh 0.00</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="edit-payment-status">Payment Status</label>
+                <select id="edit-payment-status" required>
+                  <option value="Paid">Paid</option>
+                  <option value="Not Paid">Not Paid</option>
+                </select>
+              </div>
+              <div class="form-actions">
+                <button type="button" id="cancel-edit" class="btn btn-outline">Cancel</button>
+                <button type="submit" class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Update Sale
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "customerName": "Jillian",
+    "quantity": 5,
+    "pricePerUnit": 10,
+    "totalAmount": 50,
+    "paymentStatus": "Paid",
+    "date": "2026-02-27T08:59:14.319Z"
+  },
+  {
+    "id": 2,
+    "customerName": "George",
+    "quantity": 10,
+    "pricePerUnit": 10,
+    "totalAmount": 100,
+    "paymentStatus": "Paid",
+    "date": "2026-02-27T08:59:34.437Z"
+  },
+  {
+    "id": 3,
+    "customerName": "Kamau",
+    "quantity": 100,
+    "pricePerUnit": 10,
+    "totalAmount": 1000,
+    "paymentStatus": "Not Paid",
+    "date": "2026-02-27T09:01:36.740Z"
+  }
+]
