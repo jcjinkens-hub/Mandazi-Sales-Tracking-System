@@ -27,10 +27,42 @@
             <div id="login-error" class="error-message"></div>
             <button type="submit" class="btn btn-primary btn-full">Login</button>
           </form>
-          <div class="default-credentials">
-            <p>Default credentials:</p>
-            <p>Username: <strong>seller</strong></p>
-            <p>Password: <strong>seller123</strong></p>
+          <div class="auth-switch">
+            <p>Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div id="signup-page" class="page hidden">
+      <div class="login-container">
+        <div class="login-card">
+          <h1>Create Account</h1>
+          <p class="subtitle">Sign up for Mandazi Sales Tracker</p>
+          <form id="signup-form">
+            <div class="form-group">
+              <label for="signup-username">Username</label>
+              <input type="text" id="signup-username" placeholder="Choose a username" required>
+            </div>
+            <div class="form-group">
+              <label for="signup-name">Full Name</label>
+              <input type="text" id="signup-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" placeholder="Choose a password" required>
+            </div>
+            <div class="form-group">
+              <label for="signup-confirm-password">Confirm Password</label>
+              <input type="password" id="signup-confirm-password" placeholder="Confirm your password" required>
+            </div>
+            <div id="signup-error" class="error-message"></div>
+            <div id="signup-success" class="success-message hidden"></div>
+            <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+          </form>
+          <div class="auth-switch">
+            <p>Already have an account? <a href="#" id="show-login">Login</a></p>
           </div>
         </div>
       </div>

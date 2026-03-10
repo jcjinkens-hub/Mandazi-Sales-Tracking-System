@@ -1,14 +1,5 @@
 [
   {
-    "id": 1,
-    "customerName": "Jillian",
-    "quantity": 5,
-    "pricePerUnit": 10,
-    "totalAmount": 50,
-    "paymentStatus": "Paid",
-    "date": "2026-02-27T08:59:14.319Z"
-  },
-  {
     "id": 2,
     "customerName": "George",
     "quantity": 10,
@@ -23,7 +14,34 @@
     "quantity": 100,
     "pricePerUnit": 10,
     "totalAmount": 1000,
-    "paymentStatus": "Not Paid",
+    "paymentStatus": "Paid",
     "date": "2026-02-27T09:01:36.740Z"
+  },
+  {
+    "id": 4,
+    "customerName": "gatu",
+    "quantity": 20,
+    "pricePerUnit": 10,
+    "totalAmount": 200,
+    "paymentStatus": "Paid",
+    "date": "2026-02-27T10:25:28.648Z"
+  },
+  {
+    "id": 5,
+    "customerName": "Sonny",
+    "quantity": 30,
+    "pricePerUnit": 15,
+    "totalAmount": 450,
+    "paymentStatus": "Paid",
+    "date": "2026-03-03T06:33:34.262Z"
+  },
+  {
+    "id": 6,
+    "customerName": "Baki",
+    "quantity": 50,
+    "pricePerUnit": 15,
+    "totalAmount": 750,
+    "paymentStatus": "Paid",
+    "date": "2026-03-03T06:35:03.749Z"
   }
 ]

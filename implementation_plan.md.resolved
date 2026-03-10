@@ -1,0 +1,28 @@
+# Fix Tailwind Output Error
+
+The project is configured as an ES Module (`"type": "module"` in [app/package.json](file:///c:/Users/George%27s%20PC/OneDrive/Documents/Mandazi_Sales_Tracking_System/app/package.json)), but [app/tailwind.config.js](file:///c:/Users/George%27s%20PC/OneDrive/Documents/Mandazi_Sales_Tracking_System/app/tailwind.config.js) uses CommonJS (`module.exports` and `require`). This causes a `ReferenceError` when Tailwind/Vite attempts to load the configuration. Additionally, [app/vite.config.ts](file:///c:/Users/George%27s%20PC/OneDrive/Documents/Mandazi_Sales_Tracking_System/app/vite.config.ts) uses `__dirname`, which is not available in ES modules.
+
+## Proposed Changes
+
+### [app]
+
+Summary: Fix ESM/CommonJS compatibility issues in configuration files.
+
+#### [MODIFY] [tailwind.config.js](file:///c:/Users/George's PC/OneDrive/Documents/Mandazi_Sales_Tracking_System/app/tailwind.config.js)
+- Convert `module.exports` to `export default`.
+- Replace `require` with `import` or use `tailwind.config.cjs` if `require` is preferred. Given the use of `tailwindcss-animate`, I will rename it to `.cjs` for simplicity and compatibility with existing CommonJS-based Tailwind plugins.
+
+#### [MODIFY] [vite.config.ts](file:///c:/Users/George's PC/OneDrive/Documents/Mandazi_Sales_Tracking_System/app/vite.config.ts)
+- Replace `__dirname` with `path.dirname(fileURLToPath(import.meta.url))` to support ESM path resolution.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npx vite build` in the `app` directory to verify that the configuration loads correctly and the build completes without Tailwind-related errors.
+  ```powershell
+  cd "c:\Users\George's PC\OneDrive\Documents\Mandazi_Sales_Tracking_System\app"
+  npx vite build
+  ```
+
+### Manual Verification
+- None required as build success is the primary success metric.

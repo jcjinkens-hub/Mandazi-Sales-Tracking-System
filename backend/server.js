@@ -113,6 +113,54 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+// Register (Sign Up)
+app.post('/api/register', (req, res) => {
+  const { username, name, password } = req.body;
+
+  // Validation
+  if (!username || !name || !password) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  if (username.length < 3) {
+    return res.status(400).json({ error: 'Username must be at least 3 characters' });
+  }
+
+  if (password.length < 4) {
+    return res.status(400).json({ error: 'Password must be at least 4 characters' });
+  }
+
+  const users = readUsers();
+
+  // Check if username already exists
+  if (users.find(u => u.username === username)) {
+    return res.status(400).json({ error: 'Username already exists' });
+  }
+
+  // Hash password
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
+  // Create new user
+  const newUser = {
+    id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+    username: username.trim(),
+    password: hashedPassword,
+    name: name.trim()
+  };
+
+  users.push(newUser);
+  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+
+  res.status(201).json({
+    message: 'Registration successful',
+    user: {
+      id: newUser.id,
+      username: newUser.username,
+      name: newUser.name
+    }
+  });
+});
+
 // Logout
 app.post('/api/logout', requireAuth, (req, res) => {
   req.session.destroy();

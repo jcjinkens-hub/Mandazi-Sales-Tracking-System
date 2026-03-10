@@ -94,6 +94,24 @@ async function login(username, password) {
   }
 }
 
+async function register(username, name, password) {
+  try {
+    const response = await apiCall('/register', {
+      method: 'POST',
+      body: JSON.stringify({ username, name, password }),
+    });
+    showSuccess('signup-success', 'Registration successful! Please login.');
+    document.getElementById('signup-form').reset();
+    setTimeout(() => {
+      showPage('login-page');
+      // Clear the success message after navigation
+      document.getElementById('signup-success').classList.add('hidden');
+    }, 2000);
+  } catch (error) {
+    showError('signup-error', error.message);
+  }
+}
+
 async function logout() {
   try {
     await apiCall('/logout', { method: 'POST' });
@@ -342,6 +360,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     login(username, password);
+  });
+
+  // Sign Up Form
+  document.getElementById('signup-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('signup-username').value;
+    const name = document.getElementById('signup-name').value;
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+    // Validate passwords match
+    if (password !== confirmPassword) {
+      showError('signup-error', 'Passwords do not match');
+      return;
+    }
+
+    register(username, name, password);
+  });
+
+  // Navigation between Login and Sign Up
+  document.getElementById('show-signup').addEventListener('click', (e) => {
+    e.preventDefault();
+    showPage('signup-page');
+  });
+
+  document.getElementById('show-login').addEventListener('click', (e) => {
+    e.preventDefault();
+    showPage('login-page');
   });
 
   // Logout Button

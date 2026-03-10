@@ -14,6 +14,7 @@ A full-stack web application for tracking mandazi sales and customer payments. T
 ## Tech Stack
 
 ### Backend
+
 - Node.js
 - Express.js
 - JSON file database (simple for school project)
@@ -22,6 +23,7 @@ A full-stack web application for tracking mandazi sales and customer payments. T
 - CORS enabled
 
 ### Frontend
+
 - HTML5
 - CSS3
 - Vanilla JavaScript
@@ -68,7 +70,7 @@ The frontend will be available at `http://localhost:5173`
 ## API Endpoints
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+| :--- | :--- | :--- |
 | POST | `/api/login` | User login |
 | POST | `/api/logout` | User logout |
 | GET | `/api/auth/status` | Check auth status |
@@ -83,7 +85,7 @@ The frontend will be available at `http://localhost:5173`
 
 ## Project Structure
 
-```
+```text
 .
 ├── backend/
 │   ├── server.js          # Main server file
@@ -118,6 +120,7 @@ The frontend will be available at `http://localhost:5173`
 ## Academic Context
 
 This project demonstrates:
+
 - System analysis and design
 - Database design and management
 - Frontend and backend integration
