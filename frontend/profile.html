@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - Mandazi Sales Tracker</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Loading Screen Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="loading-logo-container">
+          <img
+            src="assets/images/MSTS_logo_transparent.svg"
+            alt="MSTS Logo"
+            class="loading-logo"
+          />
+        </div>
+      </div>
+      <p class="loading-text">Loading...</p>
+    </div>
+
+    <header class="header">
+      <div class="header-content">
+        <div class="header-left">
+          <img
+            src="assets/images/MSTS_logo_transparent.svg"
+            alt="MSTS Logo"
+            class="header-logo"
+          />
+          <h1>Mandazi Sales Tracker</h1>
+        </div>
+        <div class="header-right">
+          <a href="settings.html" class="btn btn-ghost">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              ></path>
+            </svg>
+            Settings
+          </a>
+          <button id="logout-btn" class="btn btn-outline">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Profile Card -->
+      <div class="card profile-card">
+        <div class="profile-header">
+          <div class="profile-picture-container">
+            <img
+              id="profile-picture"
+              src="assets/images/default-avatar.png"
+              alt="Profile Picture"
+              class="profile-picture"
+            />
+            <label for="picture-upload" class="picture-edit-btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                />
+                <path
+                  d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                />
+              </svg>
+            </label>
+            <input
+              type="file"
+              id="picture-upload"
+              accept="image/jpeg,image/png"
+              hidden
+            />
+          </div>
+          <div class="profile-info">
+            <h2 id="username">Loading...</h2>
+            <p id="phone-number">-</p>
+            <p class="member-since">
+              Member since: <span id="date-created">-</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="20" x2="12" y2="10" />
+              <line x1="18" y1="20" x2="18" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="16" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">Total Revenue</p>
+            <p class="stat-value" id="total-revenue">KSh 0.00</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon green">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">Today</p>
+            <p class="stat-value green" id="daily-earnings">KSh 0.00</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon purple">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">This Week</p>
+            <p class="stat-value" id="weekly-earnings">KSh 0.00</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon orange">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <p class="stat-label">This Month</p>
+            <p class="stat-value" id="monthly-earnings">KSh 0.00</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Record Sale Section -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Record New Sale</h2>
+        </div>
+        <div class="card-body">
+          <form id="record-sale-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customer-name">Customer Name</label>
+                <input
+                  type="text"
+                  id="customer-name"
+                  placeholder="Enter customer name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input
+                  type="number"
+                  id="quantity"
+                  min="1"
+                  placeholder="Number of mandazi"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="price">Price Per Unit (KSh)</label>
+                <input
+                  type="number"
+                  id="price"
+                  min="1"
+                  step="0.01"
+                  placeholder="Price per mandazi"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Total Amount</label>
+                <div class="total-display">
+                  <span id="total-amount">KSh 0.00</span>
+                </div>
+              </div>
+            </div>
+            <div id="sale-message" class="message hidden"></div>
+            <button type="submit" class="btn btn-primary">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                />
+                <polyline points="17 21 17 13 7 13 7 21" />
+                <polyline points="7 3 7 8 15 8" />
+              </svg>
+              Save Sale
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Recent Sales -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Recent Sales</h2>
+        </div>
+        <div class="card-body">
+          <div class="table-container">
+            <table id="sales-table">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="sales-body"></tbody>
+            </table>
+          </div>
+          <p id="no-sales" class="empty-message hidden">
+            No sales recorded yet
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+      const API_URL = "http://localhost:3001/api";
+
+      // Format currency
+      function formatCurrency(amount) {
+        return `KSh ${(amount || 0).toLocaleString("en-KE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      }
+
+      // Format date
+      function formatDate(dateString) {
+        return new Date(dateString).toLocaleDateString("en-KE", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      // Show message
+      function showMessage(elementId, message, isError = true) {
+        const element = document.getElementById(elementId);
+        element.textContent = message;
+        element.className = isError ? "error-message" : "success-message";
+        element.classList.remove("hidden");
+        setTimeout(() => element.classList.add("hidden"), 5000);
+      }
+
+      // Load profile data
+      async function loadProfile() {
+        try {
+          const response = await fetch(`${API_URL}/user/profile`, {
+            credentials: "include",
+          });
+
+          if (response.status === 401) {
+            window.location.href = "login.html";
+            return;
+          }
+
+          const data = await response.json();
+
+          // Update profile info
+          document.getElementById("username").textContent = data.user.username;
+          document.getElementById("phone-number").textContent =
+            data.user.phone_number;
+          document.getElementById("date-created").textContent = formatDate(
+            data.user.date_created,
+          );
+
+          // Update profile picture
+          if (data.user.profile_picture) {
+            document.getElementById("profile-picture").src =
+              data.user.profile_picture;
+          }
+
+          // Update stats
+          document.getElementById("total-revenue").textContent = formatCurrency(
+            data.stats.totalRevenue,
+          );
+          document.getElementById("daily-earnings").textContent =
+            formatCurrency(data.stats.dailyEarnings);
+          document.getElementById("weekly-earnings").textContent =
+            formatCurrency(data.stats.weeklyEarnings);
+          document.getElementById("monthly-earnings").textContent =
+            formatCurrency(data.stats.monthlyEarnings);
+
+          // Load recent sales
+          loadSales(data.recentSales);
+        } catch (error) {
+          console.error("Error loading profile:", error);
+        }
+      }
+
+      // Load sales
+      function loadSales(sales) {
+        const tbody = document.getElementById("sales-body");
+        const noSales = document.getElementById("no-sales");
+
+        if (sales && sales.length > 0) {
+          tbody.innerHTML = sales
+            .map(
+              (sale) => `
+                    <tr>
+                        <td>${sale.customer_name}</td>
+                        <td>${sale.quantity}</td>
+                        <td>${formatCurrency(sale.price)}</td>
+                        <td>${formatCurrency(sale.total)}</td>
+                        <td>${formatDate(sale.date)}</td>
+                        <td>
+                            <button class="btn btn-icon btn-delete" data-id="${sale.id}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>
+                        </td>
+                    </tr>
+                `,
+            )
+            .join("");
+
+          // Add delete listeners
+          document.querySelectorAll(".btn-delete").forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+              if (confirm("Delete this sale?")) {
+                const saleId = e.currentTarget.dataset.id;
+                await deleteSale(saleId);
+              }
+            });
+          });
+
+          noSales.classList.add("hidden");
+        } else {
+          tbody.innerHTML = "";
+          noSales.classList.remove("hidden");
+        }
+      }
+
+      // Delete sale
+      async function deleteSale(saleId) {
+        try {
+          const response = await fetch(`${API_URL}/user/sales/${saleId}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            loadProfile();
+          }
+        } catch (error) {
+          console.error("Error deleting sale:", error);
+        }
+      }
+
+      // Calculate total
+      function calculateTotal() {
+        const quantity =
+          parseFloat(document.getElementById("quantity").value) || 0;
+        const price = parseFloat(document.getElementById("price").value) || 0;
+        document.getElementById("total-amount").textContent = formatCurrency(
+          quantity * price,
+        );
+      }
+
+      // Event listeners
+      document.addEventListener("DOMContentLoaded", () => {
+        loadProfile();
+
+        // Calculate total on input
+        document
+          .getElementById("quantity")
+          .addEventListener("input", calculateTotal);
+        document
+          .getElementById("price")
+          .addEventListener("input", calculateTotal);
+
+        // Record sale form
+        document
+          .getElementById("record-sale-form")
+          .addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const customerName = document.getElementById("customer-name").value;
+            const quantity = parseInt(
+              document.getElementById("quantity").value,
+            );
+            const price = parseFloat(document.getElementById("price").value);
+
+            try {
+              const response = await fetch(`${API_URL}/user/sales`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ customerName, quantity, price }),
+                credentials: "include",
+              });
+
+              if (response.ok) {
+                showMessage(
+                  "sale-message",
+                  "Sale recorded successfully!",
+                  false,
+                );
+                document.getElementById("record-sale-form").reset();
+                document.getElementById("total-amount").textContent =
+                  "KSh 0.00";
+                loadProfile();
+              } else {
+                const data = await response.json();
+                showMessage("sale-message", data.error, true);
+              }
+            } catch (error) {
+              showMessage("sale-message", "Error recording sale", true);
+            }
+          });
+
+        // Logout
+        document
+          .getElementById("logout-btn")
+          .addEventListener("click", async () => {
+            await fetch(`${API_URL}/auth/logout`, {
+              method: "POST",
+              credentials: "include",
+            });
+            window.location.href = "login.html";
+          });
+
+        // Picture upload
+        document
+          .getElementById("picture-upload")
+          .addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("profilePicture", file);
+
+            try {
+              const response = await fetch(`${API_URL}/user/upload-picture`, {
+                method: "POST",
+                body: formData,
+                credentials: "include",
+              });
+
+              const data = await response.json();
+              if (response.ok) {
+                document.getElementById("profile-picture").src =
+                  data.profile_picture;
+              }
+            } catch (error) {
+              console.error("Error uploading picture:", error);
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

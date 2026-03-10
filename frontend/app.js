@@ -2,140 +2,180 @@
 
 const API_URL = 'http://localhost:3001/api';
 
+// Loading Screen Functions
+function showLoadingScreen() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.classList.remove('hidden');
+    }
+}
+
+function hideLoadingScreen() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+    }
+}
+
 // Utility Functions
 function formatCurrency(amount) {
-  return `KSh ${amount.toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `KSh ${amount.toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-KE', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+    return new Date(dateString).toLocaleDateString('en-KE', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    });
 }
 
 function showError(elementId, message) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.textContent = message;
-    element.classList.remove('hidden');
-    setTimeout(() => {
-      element.classList.add('hidden');
-    }, 5000);
-  }
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = message;
+        element.classList.remove('hidden');
+        setTimeout(() => {
+            element.classList.add('hidden');
+        }, 5000);
+    }
 }
 
 function showSuccess(elementId, message) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.textContent = message;
-    element.classList.remove('hidden');
-    setTimeout(() => {
-      element.classList.add('hidden');
-    }, 3000);
-  }
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = message;
+        element.classList.remove('hidden');
+        setTimeout(() => {
+            element.classList.add('hidden');
+        }, 3000);
+    }
 }
 
 // Navigation
 function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(page => {
-    page.classList.add('hidden');
-  });
-  document.getElementById(pageId).classList.remove('hidden');
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.add('hidden');
+    });
+    document.getElementById(pageId).classList.remove('hidden');
 }
 
 // API Calls
 async function apiCall(endpoint, options = {}) {
-  const url = `${API_URL}${endpoint}`;
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    ...options,
-  };
+    const url = `${API_URL}${endpoint}`;
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        ...options,
+    };
 
-  const response = await fetch(url, config);
-  const data = await response.json();
+    const response = await fetch(url, config);
+    const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.error || 'Something went wrong');
-  }
+    if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong');
+    }
 
-  return data;
+    return data;
 }
 
 // Auth Functions
 async function checkAuth() {
-  try {
-    const response = await apiCall('/auth/status');
-    if (response.authenticated) {
-      showPage('dashboard-page');
-      loadDashboard();
-    } else {
-      showPage('login-page');
+    try {
+        const response = await apiCall('/auth/status');
+        if (response.authenticated) {
+            showPage('dashboard-page');
+            loadDashboard();
+        } else {
+            showPage('login-page');
+        }
+    } catch (error) {
+        showPage('login-page');
     }
-  } catch (error) {
-    showPage('login-page');
-  }
 }
 
 async function login(username, password) {
-  try {
-    const response = await apiCall('/login', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-    });
-    showPage('dashboard-page');
-    loadDashboard();
-  } catch (error) {
-    showError('login-error', error.message);
-  }
+    // Show loading screen
+    showLoadingScreen();
+
+    try {
+        const response = await apiCall('/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                username,
+                password
+            }),
+        });
+
+        // Hide loading screen with fade out before redirect
+        hideLoadingScreen();
+
+        showPage('dashboard-page');
+        loadDashboard();
+    } catch (error) {
+        hideLoadingScreen();
+        showError('login-error', error.message);
+    }
 }
 
 async function register(username, name, password) {
-  try {
-    const response = await apiCall('/register', {
-      method: 'POST',
-      body: JSON.stringify({ username, name, password }),
-    });
-    showSuccess('signup-success', 'Registration successful! Please login.');
-    document.getElementById('signup-form').reset();
-    setTimeout(() => {
-      showPage('login-page');
-      // Clear the success message after navigation
-      document.getElementById('signup-success').classList.add('hidden');
-    }, 2000);
-  } catch (error) {
-    showError('signup-error', error.message);
-  }
+    // Show loading screen
+    showLoadingScreen();
+
+    try {
+        const response = await apiCall('/register', {
+            method: 'POST',
+            body: JSON.stringify({
+                username,
+                name,
+                password
+            }),
+        });
+
+        // Hide loading screen
+        hideLoadingScreen();
+
+        showSuccess('signup-success', 'Registration successful! Please login.');
+        document.getElementById('signup-form').reset();
+        setTimeout(() => {
+            showPage('login-page');
+            // Clear the success message after navigation
+            document.getElementById('signup-success').classList.add('hidden');
+        }, 2000);
+    } catch (error) {
+        hideLoadingScreen();
+        showError('signup-error', error.message);
+    }
 }
 
 async function logout() {
-  try {
-    await apiCall('/logout', { method: 'POST' });
-    showPage('login-page');
-  } catch (error) {
-    console.error('Logout error:', error);
-  }
+    try {
+        await apiCall('/logout', {
+            method: 'POST'
+        });
+        showPage('login-page');
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
 }
 
 // Dashboard Functions
 async function loadDashboard() {
-  try {
-    const stats = await apiCall('/dashboard');
-    
-    document.getElementById('total-sales').textContent = formatCurrency(stats.totalSales);
-    document.getElementById('total-paid').textContent = formatCurrency(stats.totalPaid);
-    document.getElementById('total-unpaid').textContent = formatCurrency(stats.totalUnpaid);
-    document.getElementById('total-count').textContent = stats.totalSalesCount;
+    try {
+        const stats = await apiCall('/dashboard');
 
-    const recentSalesBody = document.getElementById('recent-sales-body');
-    const noRecentSales = document.getElementById('no-recent-sales');
+        document.getElementById('total-sales').textContent = formatCurrency(stats.totalSales);
+        document.getElementById('total-paid').textContent = formatCurrency(stats.totalPaid);
+        document.getElementById('total-unpaid').textContent = formatCurrency(stats.totalUnpaid);
+        document.getElementById('total-count').textContent = stats.totalSalesCount;
 
-    if (stats.recentSales && stats.recentSales.length > 0) {
-      recentSalesBody.innerHTML = stats.recentSales.map(sale => `
+        const recentSalesBody = document.getElementById('recent-sales-body');
+        const noRecentSales = document.getElementById('no-recent-sales');
+
+        if (stats.recentSales && stats.recentSales.length > 0) {
+            recentSalesBody.innerHTML = stats.recentSales.map(sale => `
         <tr>
           <td>${sale.customerName}</td>
           <td>${sale.quantity}</td>
@@ -144,58 +184,58 @@ async function loadDashboard() {
           <td>${formatDate(sale.date)}</td>
         </tr>
       `).join('');
-      noRecentSales.classList.add('hidden');
-    } else {
-      recentSalesBody.innerHTML = '';
-      noRecentSales.classList.remove('hidden');
+            noRecentSales.classList.add('hidden');
+        } else {
+            recentSalesBody.innerHTML = '';
+            noRecentSales.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Dashboard load error:', error);
     }
-  } catch (error) {
-    console.error('Dashboard load error:', error);
-  }
 }
 
 // Record Sale Functions
 function calculateTotal() {
-  const quantity = parseFloat(document.getElementById('quantity').value) || 0;
-  const pricePerUnit = parseFloat(document.getElementById('price-per-unit').value) || 0;
-  const total = quantity * pricePerUnit;
-  document.getElementById('total-amount').textContent = formatCurrency(total);
+    const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+    const pricePerUnit = parseFloat(document.getElementById('price-per-unit').value) || 0;
+    const total = quantity * pricePerUnit;
+    document.getElementById('total-amount').textContent = formatCurrency(total);
 }
 
 async function recordSale(customerName, quantity, pricePerUnit, paymentStatus) {
-  try {
-    const totalAmount = quantity * pricePerUnit;
-    await apiCall('/sales', {
-      method: 'POST',
-      body: JSON.stringify({
-        customerName,
-        quantity,
-        pricePerUnit,
-        totalAmount,
-        paymentStatus,
-      }),
-    });
-    showSuccess('record-success', 'Sale recorded successfully!');
-    document.getElementById('record-sale-form').reset();
-    calculateTotal();
-    setTimeout(() => {
-      showPage('dashboard-page');
-      loadDashboard();
-    }, 1500);
-  } catch (error) {
-    showError('record-error', error.message);
-  }
+    try {
+        const totalAmount = quantity * pricePerUnit;
+        await apiCall('/sales', {
+            method: 'POST',
+            body: JSON.stringify({
+                customerName,
+                quantity,
+                pricePerUnit,
+                totalAmount,
+                paymentStatus,
+            }),
+        });
+        showSuccess('record-success', 'Sale recorded successfully!');
+        document.getElementById('record-sale-form').reset();
+        calculateTotal();
+        setTimeout(() => {
+            showPage('dashboard-page');
+            loadDashboard();
+        }, 1500);
+    } catch (error) {
+        showError('record-error', error.message);
+    }
 }
 
 // View Sales Functions
 async function loadAllSales() {
-  try {
-    const sales = await apiCall('/sales');
-    const salesBody = document.getElementById('all-sales-body');
-    const noSales = document.getElementById('no-sales');
+    try {
+        const sales = await apiCall('/sales');
+        const salesBody = document.getElementById('all-sales-body');
+        const noSales = document.getElementById('no-sales');
 
-    if (sales && sales.length > 0) {
-      salesBody.innerHTML = sales.map(sale => `
+        if (sales && sales.length > 0) {
+            salesBody.innerHTML = sales.map(sale => `
         <tr>
           <td>#${sale.id}</td>
           <td>${sale.customerName}</td>
@@ -215,52 +255,54 @@ async function loadAllSales() {
           </td>
         </tr>
       `).join('');
-      noSales.classList.add('hidden');
+            noSales.classList.add('hidden');
 
-      // Add event listeners for edit and delete buttons
-      document.querySelectorAll('.btn-edit').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const saleId = e.currentTarget.dataset.id;
-          loadSaleForEdit(saleId);
-        });
-      });
+            // Add event listeners for edit and delete buttons
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const saleId = e.currentTarget.dataset.id;
+                    loadSaleForEdit(saleId);
+                });
+            });
 
-      document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const saleId = e.currentTarget.dataset.id;
-          if (confirm('Are you sure you want to delete this sale?')) {
-            deleteSale(saleId);
-          }
-        });
-      });
-    } else {
-      salesBody.innerHTML = '';
-      noSales.classList.remove('hidden');
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const saleId = e.currentTarget.dataset.id;
+                    if (confirm('Are you sure you want to delete this sale?')) {
+                        deleteSale(saleId);
+                    }
+                });
+            });
+        } else {
+            salesBody.innerHTML = '';
+            noSales.classList.remove('hidden');
+        }
+    } catch (error) {
+        showError('sales-error', error.message);
     }
-  } catch (error) {
-    showError('sales-error', error.message);
-  }
 }
 
 async function deleteSale(saleId) {
-  try {
-    await apiCall(`/sales/${saleId}`, { method: 'DELETE' });
-    loadAllSales();
-    loadDashboard();
-  } catch (error) {
-    showError('sales-error', error.message);
-  }
+    try {
+        await apiCall(`/sales/${saleId}`, {
+            method: 'DELETE'
+        });
+        loadAllSales();
+        loadDashboard();
+    } catch (error) {
+        showError('sales-error', error.message);
+    }
 }
 
 // View Unpaid Functions
 async function loadUnpaidSales() {
-  try {
-    const sales = await apiCall('/sales/unpaid');
-    const unpaidBody = document.getElementById('unpaid-sales-body');
-    const noUnpaid = document.getElementById('no-unpaid');
+    try {
+        const sales = await apiCall('/sales/unpaid');
+        const unpaidBody = document.getElementById('unpaid-sales-body');
+        const noUnpaid = document.getElementById('no-unpaid');
 
-    if (sales && sales.length > 0) {
-      unpaidBody.innerHTML = sales.map(sale => `
+        if (sales && sales.length > 0) {
+            unpaidBody.innerHTML = sales.map(sale => `
         <tr>
           <td>#${sale.id}</td>
           <td>${sale.customerName}</td>
@@ -275,194 +317,196 @@ async function loadUnpaidSales() {
           </td>
         </tr>
       `).join('');
-      noUnpaid.classList.add('hidden');
+            noUnpaid.classList.add('hidden');
 
-      // Add event listeners for mark as paid buttons
-      document.querySelectorAll('.btn-mark-paid').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const saleId = e.currentTarget.dataset.id;
-          markAsPaid(saleId);
-        });
-      });
-    } else {
-      unpaidBody.innerHTML = '';
-      noUnpaid.classList.remove('hidden');
+            // Add event listeners for mark as paid buttons
+            document.querySelectorAll('.btn-mark-paid').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const saleId = e.currentTarget.dataset.id;
+                    markAsPaid(saleId);
+                });
+            });
+        } else {
+            unpaidBody.innerHTML = '';
+            noUnpaid.classList.remove('hidden');
+        }
+    } catch (error) {
+        showError('unpaid-error', error.message);
     }
-  } catch (error) {
-    showError('unpaid-error', error.message);
-  }
 }
 
 async function markAsPaid(saleId) {
-  try {
-    await apiCall(`/sales/${saleId}/mark-paid`, { method: 'PATCH' });
-    showSuccess('unpaid-success', 'Sale marked as paid!');
-    loadUnpaidSales();
-    loadDashboard();
-  } catch (error) {
-    showError('unpaid-error', error.message);
-  }
+    try {
+        await apiCall(`/sales/${saleId}/mark-paid`, {
+            method: 'PATCH'
+        });
+        showSuccess('unpaid-success', 'Sale marked as paid!');
+        loadUnpaidSales();
+        loadDashboard();
+    } catch (error) {
+        showError('unpaid-error', error.message);
+    }
 }
 
 // Edit Sale Functions
 async function loadSaleForEdit(saleId) {
-  try {
-    const sale = await apiCall(`/sales/${saleId}`);
-    document.getElementById('edit-sale-id').value = sale.id;
-    document.getElementById('edit-quantity').value = sale.quantity;
-    document.getElementById('edit-price-per-unit').value = sale.pricePerUnit;
-    document.getElementById('edit-payment-status').value = sale.paymentStatus;
-    calculateEditTotal();
-    showPage('edit-sale-page');
-  } catch (error) {
-    showError('sales-error', error.message);
-  }
+    try {
+        const sale = await apiCall(`/sales/${saleId}`);
+        document.getElementById('edit-sale-id').value = sale.id;
+        document.getElementById('edit-quantity').value = sale.quantity;
+        document.getElementById('edit-price-per-unit').value = sale.pricePerUnit;
+        document.getElementById('edit-payment-status').value = sale.paymentStatus;
+        calculateEditTotal();
+        showPage('edit-sale-page');
+    } catch (error) {
+        showError('sales-error', error.message);
+    }
 }
 
 function calculateEditTotal() {
-  const quantity = parseFloat(document.getElementById('edit-quantity').value) || 0;
-  const pricePerUnit = parseFloat(document.getElementById('edit-price-per-unit').value) || 0;
-  const total = quantity * pricePerUnit;
-  document.getElementById('edit-total-amount').textContent = formatCurrency(total);
+    const quantity = parseFloat(document.getElementById('edit-quantity').value) || 0;
+    const pricePerUnit = parseFloat(document.getElementById('edit-price-per-unit').value) || 0;
+    const total = quantity * pricePerUnit;
+    document.getElementById('edit-total-amount').textContent = formatCurrency(total);
 }
 
 async function updateSale(saleId, quantity, pricePerUnit, paymentStatus) {
-  try {
-    const totalAmount = quantity * pricePerUnit;
-    await apiCall(`/sales/${saleId}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        quantity,
-        pricePerUnit,
-        totalAmount,
-        paymentStatus,
-      }),
-    });
-    showSuccess('edit-success', 'Sale updated successfully!');
-    setTimeout(() => {
-      showPage('view-sales-page');
-      loadAllSales();
-      loadDashboard();
-    }, 1500);
-  } catch (error) {
-    showError('edit-error', error.message);
-  }
+    try {
+        const totalAmount = quantity * pricePerUnit;
+        await apiCall(`/sales/${saleId}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                quantity,
+                pricePerUnit,
+                totalAmount,
+                paymentStatus,
+            }),
+        });
+        showSuccess('edit-success', 'Sale updated successfully!');
+        setTimeout(() => {
+            showPage('view-sales-page');
+            loadAllSales();
+            loadDashboard();
+        }, 1500);
+    } catch (error) {
+        showError('edit-error', error.message);
+    }
 }
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-  // Check auth status on load
-  checkAuth();
+    // Check auth status on load
+    checkAuth();
 
-  // Login Form
-  document.getElementById('login-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    login(username, password);
-  });
+    // Login Form
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        login(username, password);
+    });
 
-  // Sign Up Form
-  document.getElementById('signup-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('signup-username').value;
-    const name = document.getElementById('signup-name').value;
-    const password = document.getElementById('signup-password').value;
-    const confirmPassword = document.getElementById('signup-confirm-password').value;
+    // Sign Up Form
+    document.getElementById('signup-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signup-username').value;
+        const name = document.getElementById('signup-name').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
 
-    // Validate passwords match
-    if (password !== confirmPassword) {
-      showError('signup-error', 'Passwords do not match');
-      return;
-    }
+        // Validate passwords match
+        if (password !== confirmPassword) {
+            showError('signup-error', 'Passwords do not match');
+            return;
+        }
 
-    register(username, name, password);
-  });
+        register(username, name, password);
+    });
 
-  // Navigation between Login and Sign Up
-  document.getElementById('show-signup').addEventListener('click', (e) => {
-    e.preventDefault();
-    showPage('signup-page');
-  });
+    // Navigation between Login and Sign Up
+    document.getElementById('show-signup').addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage('signup-page');
+    });
 
-  document.getElementById('show-login').addEventListener('click', (e) => {
-    e.preventDefault();
-    showPage('login-page');
-  });
+    document.getElementById('show-login').addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage('login-page');
+    });
 
-  // Logout Button
-  document.getElementById('logout-btn').addEventListener('click', logout);
+    // Logout Button
+    document.getElementById('logout-btn').addEventListener('click', logout);
 
-  // Dashboard Navigation
-  document.getElementById('btn-record-sale').addEventListener('click', () => {
-    showPage('record-sale-page');
-  });
+    // Dashboard Navigation
+    document.getElementById('btn-record-sale').addEventListener('click', () => {
+        showPage('record-sale-page');
+    });
 
-  document.getElementById('btn-view-sales').addEventListener('click', () => {
-    showPage('view-sales-page');
-    loadAllSales();
-  });
+    document.getElementById('btn-view-sales').addEventListener('click', () => {
+        showPage('view-sales-page');
+        loadAllSales();
+    });
 
-  document.getElementById('btn-view-unpaid').addEventListener('click', () => {
-    showPage('view-unpaid-page');
-    loadUnpaidSales();
-  });
+    document.getElementById('btn-view-unpaid').addEventListener('click', () => {
+        showPage('view-unpaid-page');
+        loadUnpaidSales();
+    });
 
-  // Back Buttons
-  document.getElementById('back-from-record').addEventListener('click', () => {
-    showPage('dashboard-page');
-  });
+    // Back Buttons
+    document.getElementById('back-from-record').addEventListener('click', () => {
+        showPage('dashboard-page');
+    });
 
-  document.getElementById('cancel-record').addEventListener('click', () => {
-    showPage('dashboard-page');
-  });
+    document.getElementById('cancel-record').addEventListener('click', () => {
+        showPage('dashboard-page');
+    });
 
-  document.getElementById('back-from-sales').addEventListener('click', () => {
-    showPage('dashboard-page');
-  });
+    document.getElementById('back-from-sales').addEventListener('click', () => {
+        showPage('dashboard-page');
+    });
 
-  document.getElementById('back-from-unpaid').addEventListener('click', () => {
-    showPage('dashboard-page');
-  });
+    document.getElementById('back-from-unpaid').addEventListener('click', () => {
+        showPage('dashboard-page');
+    });
 
-  document.getElementById('back-from-edit').addEventListener('click', () => {
-    showPage('view-sales-page');
-  });
+    document.getElementById('back-from-edit').addEventListener('click', () => {
+        showPage('view-sales-page');
+    });
 
-  document.getElementById('cancel-edit').addEventListener('click', () => {
-    showPage('view-sales-page');
-  });
+    document.getElementById('cancel-edit').addEventListener('click', () => {
+        showPage('view-sales-page');
+    });
 
-  // Record Sale Form
-  document.getElementById('quantity').addEventListener('input', calculateTotal);
-  document.getElementById('price-per-unit').addEventListener('input', calculateTotal);
+    // Record Sale Form
+    document.getElementById('quantity').addEventListener('input', calculateTotal);
+    document.getElementById('price-per-unit').addEventListener('input', calculateTotal);
 
-  document.getElementById('record-sale-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const customerName = document.getElementById('customer-name').value;
-    const quantity = parseInt(document.getElementById('quantity').value);
-    const pricePerUnit = parseFloat(document.getElementById('price-per-unit').value);
-    const paymentStatus = document.getElementById('payment-status').value;
-    recordSale(customerName, quantity, pricePerUnit, paymentStatus);
-  });
+    document.getElementById('record-sale-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const customerName = document.getElementById('customer-name').value;
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const pricePerUnit = parseFloat(document.getElementById('price-per-unit').value);
+        const paymentStatus = document.getElementById('payment-status').value;
+        recordSale(customerName, quantity, pricePerUnit, paymentStatus);
+    });
 
-  // Edit Sale Form
-  document.getElementById('edit-quantity').addEventListener('input', calculateEditTotal);
-  document.getElementById('edit-price-per-unit').addEventListener('input', calculateEditTotal);
+    // Edit Sale Form
+    document.getElementById('edit-quantity').addEventListener('input', calculateEditTotal);
+    document.getElementById('edit-price-per-unit').addEventListener('input', calculateEditTotal);
 
-  document.getElementById('edit-sale-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const saleId = document.getElementById('edit-sale-id').value;
-    const quantity = parseInt(document.getElementById('edit-quantity').value);
-    const pricePerUnit = parseFloat(document.getElementById('edit-price-per-unit').value);
-    const paymentStatus = document.getElementById('edit-payment-status').value;
-    updateSale(saleId, quantity, pricePerUnit, paymentStatus);
-  });
+    document.getElementById('edit-sale-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const saleId = document.getElementById('edit-sale-id').value;
+        const quantity = parseInt(document.getElementById('edit-quantity').value);
+        const pricePerUnit = parseFloat(document.getElementById('edit-price-per-unit').value);
+        const paymentStatus = document.getElementById('edit-payment-status').value;
+        updateSale(saleId, quantity, pricePerUnit, paymentStatus);
+    });
 });
 
 // Prevent back button after logout
 window.addEventListener('pageshow', (event) => {
-  if (event.persisted) {
-    checkAuth();
-  }
+    if (event.persisted) {
+        checkAuth();
+    }
 });

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandazi Payment Tracker</title>
+    <link rel="stylesheet" href="payments.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="https://www.safaricom.co.ke/images/logo-m-pesa-logo-vector.png" alt="M-Pesa Logo" class="mpesa-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 30%22><rect fill=%22%2380C341%22 width=%22100%22 height=%2230%22/><text x=%2250%22 y=%2220%22 text-anchor=%22middle%22 fill=%22white%22 font-weight=%22bold%22>M-PESA</text></svg>'">
+            <span class="brand-text">Mandazi Payment Tracker</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="#" class="nav-link active">Payments</a>
+            <button id="logout-btn" class="btn btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Payment Summary Cards -->
+        <section class="payment-summary">
+            <div class="summary-card summary-total">
+                <h3>Total Sales</h3>
+                <p class="summary-amount" id="total-amount">KSh 0</p>
+            </div>
+            <div class="summary-card summary-paid">
+                <h3>Total Paid</h3>
+                <p class="summary-amount" id="total-paid">KSh 0</p>
+            </div>
+            <div class="summary-card summary-unpaid">
+                <h3>Total Unpaid</h3>
+                <p class="summary-amount" id="total-unpaid">KSh 0</p>
+            </div>
+        </section>
+
+        <!-- Error/Success Messages -->
+        <div id="payment-message" class="message hidden"></div>
+
+        <!-- Sales Table -->
+        <section class="sales-table-section">
+            <h2>Payment Records</h2>
+            <div class="table-container">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Phone Number</th>
+                            <th>Details</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
+                            <th>M-Pesa Payment</th>
+                            <th>Mark as Paid</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-table-body">
+                        <!-- Sales rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+                <div id="no-sales" class="no-sales hidden">
+                    <p>No sales records found.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Manual Payment Modal -->
+    <div id="manual-payment-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Manual Payment</h3>
+            <p>Enter the M-Pesa receipt code to mark this sale as paid.</p>
+            <form id="manual-payment-form">
+                <input type="hidden" id="manual-sale-id">
+                <div class="form-group">
+                    <label for="receipt-code">M-Pesa Receipt Code:</label>
+                    <input type="text" id="receipt-code" placeholder="e.g., MPN123456789" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-cancel" id="cancel-manual">Cancel</button>
+                    <button type="submit" class="btn btn-confirm">Confirm Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Processing Modal -->
+    <div id="payment-processing-modal" class="modal hidden">
+        <div class="modal-content modal-processing">
+            <div class="spinner"></div>
+            <h3>Processing Payment</h3>
+            <p>Please check your phone for the M-Pesa prompt.</p>
+            <p class="processing-note">Enter your PIN to complete the payment.</p>
+            <button type="button" class="btn btn-cancel" id="cancel-payment">Cancel</button>
+        </div>
+    </div>
+
+    <script src="payments.js"></script>
+</body>
+</html>

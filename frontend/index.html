@@ -8,12 +8,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Loading Screen Overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="loading-spinner">
+      <div class="spinner-ring"></div>
+      <div class="loading-logo-container">
+        <img src="assets/images/MSTS_logo_transparent.svg" alt="MSTS Logo" class="loading-logo">
+      </div>
+    </div>
+    <p class="loading-text">Please wait...</p>
+  </div>
+
   <div id="app">
     <!-- Login Page -->
     <div id="login-page" class="page">
-      <div class="login-container">
+      <div class="auth-container">
+        <div class="auth-logo-wrapper">
+          <img src="assets/images/MSTS_logo_transparent.svg" alt="Mandazi Sales Tracker Logo" class="auth-logo">
+        </div>
         <div class="login-card">
-          <h1>Mandazi Sales Tracker</h1>
+          <h1>Welcome Back</h1>
           <p class="subtitle">Login to your account</p>
           <form id="login-form">
             <div class="form-group">
@@ -36,7 +50,10 @@
 
     <!-- Sign Up Page -->
     <div id="signup-page" class="page hidden">
-      <div class="login-container">
+      <div class="auth-container">
+        <div class="auth-logo-wrapper">
+          <img src="assets/images/MSTS_logo_transparent.svg" alt="Mandazi Sales Tracker Logo" class="auth-logo">
+        </div>
         <div class="login-card">
           <h1>Create Account</h1>
           <p class="subtitle">Sign up for Mandazi Sales Tracker</p>
@@ -48,6 +65,10 @@
             <div class="form-group">
               <label for="signup-name">Full Name</label>
               <input type="text" id="signup-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+              <label for="signup-phone">Phone Number</label>
+              <input type="tel" id="signup-phone" placeholder="Enter phone number (e.g., 0712345678)" pattern="[0-9]{10,12}" required>
             </div>
             <div class="form-group">
               <label for="signup-password">Password</label>

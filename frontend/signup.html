@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - Mandazi Sales Tracker</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Loading Screen Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="loading-logo-container">
+          <img
+            src="assets/images/MSTS_logo_transparent.svg"
+            alt="MSTS Logo"
+            class="loading-logo"
+          />
+        </div>
+      </div>
+      <p class="loading-text">Creating account...</p>
+    </div>
+
+    <div class="auth-container">
+      <div class="auth-logo-wrapper">
+        <img
+          src="assets/images/MSTS_logo_transparent.svg"
+          alt="Mandazi Sales Tracker Logo"
+          class="auth-logo"
+        />
+      </div>
+
+      <div class="login-card">
+        <h1>Create Account</h1>
+        <p class="subtitle">Sign up for Mandazi Sales Tracker</p>
+
+        <form id="signup-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Choose a username"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              placeholder="Enter phone number (e.g., 0712345678)"
+              pattern="[0-9]{10,12}"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Choose a password"
+              minlength="6"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+
+          <div id="signup-error" class="error-message hidden"></div>
+          <div id="signup-success" class="success-message hidden"></div>
+
+          <button type="submit" class="btn btn-primary btn-full">
+            Sign Up
+          </button>
+        </form>
+
+        <div class="auth-switch">
+          <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+      // Handle signup form submission
+      document
+        .getElementById("signup-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const phoneNumber = document.getElementById("phoneNumber").value;
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const errorDiv = document.getElementById("signup-error");
+          const successDiv = document.getElementById("signup-success");
+
+          // Clear previous messages
+          errorDiv.classList.add("hidden");
+          successDiv.classList.add("hidden");
+
+          // Validate passwords match
+          if (password !== confirmPassword) {
+            errorDiv.textContent = "Passwords do not match";
+            errorDiv.classList.remove("hidden");
+            return;
+          }
+
+          // Show loading
+          showLoadingScreen();
+
+          try {
+            const response = await fetch(
+              "http://localhost:3001/api/auth/signup",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  username,
+                  phoneNumber,
+                  password,
+                  confirmPassword,
+                }),
+              },
+            );
+
+            const data = await response.json();
+
+            hideLoadingScreen();
+
+            if (response.ok) {
+              successDiv.textContent =
+                "Account created successfully! Redirecting to login...";
+              successDiv.classList.remove("hidden");
+
+              // Redirect to login after 2 seconds
+              setTimeout(() => {
+                window.location.href = "login.html";
+              }, 2000);
+            } else {
+              // Handle specific error messages
+              if (data.error.includes("username")) {
+                errorDiv.textContent = "Username already taken";
+              } else if (data.error.includes("phone")) {
+                errorDiv.textContent = "Phone number already registered";
+              } else {
+                errorDiv.textContent = data.error;
+              }
+              errorDiv.classList.remove("hidden");
+            }
+          } catch (error) {
+            hideLoadingScreen();
+            errorDiv.textContent = "Connection error. Please try again.";
+            errorDiv.classList.remove("hidden");
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Mandazi Sales Tracker</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Loading Screen Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="loading-logo-container">
+          <img
+            src="assets/images/MSTS_logo_transparent.svg"
+            alt="MSTS Logo"
+            class="loading-logo"
+          />
+        </div>
+      </div>
+      <p class="loading-text">Please wait...</p>
+    </div>
+
+    <div class="auth-container">
+      <div class="auth-logo-wrapper">
+        <img
+          src="assets/images/MSTS_logo_transparent.svg"
+          alt="Mandazi Sales Tracker Logo"
+          class="auth-logo"
+        />
+      </div>
+
+      <div class="login-card">
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Login to your account</p>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter username"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <div class="form-links">
+            <a href="forgot-password.html" class="forgot-link"
+              >Forgot Password?</a
+            >
+          </div>
+
+          <div id="login-error" class="error-message hidden"></div>
+
+          <button type="submit" class="btn btn-primary btn-full">Login</button>
+        </form>
+
+        <div class="auth-switch">
+          <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+      // Handle login form submission
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const errorDiv = document.getElementById("login-error");
+
+          // Show loading
+          showLoadingScreen();
+
+          try {
+            const response = await fetch(
+              "http://localhost:3001/api/auth/login",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username, password }),
+                credentials: "include",
+              },
+            );
+
+            const data = await response.json();
+
+            hideLoadingScreen();
+
+            if (response.ok) {
+              // Redirect to profile page
+              window.location.href = "profile.html";
+            } else {
+              errorDiv.textContent = data.error;
+              errorDiv.classList.remove("hidden");
+              setTimeout(() => {
+                errorDiv.classList.add("hidden");
+              }, 5000);
+            }
+          } catch (error) {
+            hideLoadingScreen();
+            errorDiv.textContent = "Connection error. Please try again.";
+            errorDiv.classList.remove("hidden");
+          }
+        });
+    </script>
+  </body>
+</html>

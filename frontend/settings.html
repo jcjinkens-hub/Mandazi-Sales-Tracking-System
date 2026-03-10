@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Mandazi Sales Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <div class="loading-logo-container">
+                <img src="assets/images/MSTS_logo_transparent.svg" alt="MSTS Logo" class="loading-logo">
+            </div>
+        </div>
+        <p class="loading-text">Loading...</p>
+    </div>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="assets/images/MSTS_logo_transparent.svg" alt="MSTS Logo" class="header-logo">
+                <h1>Settings</h1>
+            </div>
+            <div class="header-right">
+                <a href="profile.html" class="btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Profile
+                </a>
+                <button id="logout-btn" class="btn btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="settings-container">
+            <!-- Change Username -->
+            <div class="card settings-card">
+                <div class="card-header">
+                    <h2>Change Username</h2>
+                </div>
+                <div class="card-body">
+                    <form id="username-form">
+                        <div class="form-group">
+                            <label for="new-username">New Username</label>
+                            <input type="text" id="new-username" placeholder="Enter new username" required>
+                        </div>
+                        <div id="username-message" class="message hidden"></div>
+                        <button type="submit" class="btn btn-primary">Update Username</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Change Password -->
+            <div class="card settings-card">
+                <div class="card-header">
+                    <h2>Change Password</h2>
+                </div>
+                <div class="card-body">
+                    <form id="password-form">
+                        <div class="form-group">
+                            <label for="current-password">Current Password</label>
+                            <input type="password" id="current-password" placeholder="Enter current password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">New Password</label>
+                            <input type="password" id="new-password" placeholder="Enter new password" minlength="6" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-new-password">Confirm New Password</label>
+                            <input type="password" id="confirm-new-password" placeholder="Confirm new password" required>
+                        </div>
+                        <div id="password-message" class="message hidden"></div>
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Upload Profile Picture -->
+            <div class="card settings-card">
+                <div class="card-header">
+                    <h2>Profile Picture</h2>
+                </div>
+                <div class="card-body">
+                    <div class="profile-picture-upload">
+                        <img id="current-picture" src="assets/images/default-avatar.svg" alt="Current Picture" class="settings-profile-picture">
+                        <div class="upload-controls">
+                            <input type="file" id="new-picture" accept="image/jpeg,image/png" hidden>
+                            <label for="new-picture" class="btn btn-outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                Choose File
+                            </label>
+                            <p class="file-hint">JPG or PNG only, max 5MB</p>
+                        </div>
+                    </div>
+                    <div id="picture-message" class="message hidden"></div>
+                </div>
+            </div>
+
+            <!-- Theme Settings -->
+            <div class="card settings-card">
+                <div class="card-header">
+                    <h2>Appearance</h2>
+                </div>
+                <div class="card-body">
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <h3>Theme</h3>
+                            <p>Choose between light and dark mode</p>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-light" class="theme-btn active" data-theme="light">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                                Light
+                            </button>
+                            <button id="theme-dark" class="theme-btn" data-theme="dark">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                                Dark
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <h3>Dashboard Layout</h3>
+                            <p>Choose your preferred dashboard layout</p>
+                        </div>
+                        <div class="layout-toggle">
+                            <button id="layout-default" class="layout-btn active" data-layout="default">Default</button>
+                            <button id="layout-compact" class="layout-btn" data-layout="compact">Compact</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const API_URL = 'http://localhost:3001/api';
+        
+        // Show message
+        function showMessage(elementId, message, isError = true) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = isError ? 'error-message' : 'success-message';
+            element.classList.remove('hidden');
+            setTimeout(() => element.classList.add('hidden'), 5000);
+        }
+        
+        // Load preferences
+        async function loadPreferences() {
+            try {
+                const response = await fetch(`${API_URL}/user/preferences`, {
+                    credentials: 'include'
+                });
+                
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const prefs = await response.json();
+                
+                // Set theme
+                if (prefs.theme === 'dark') {
+                    document.getElementById('theme-dark').classList.add('active');
+                    document.getElementById('theme-light').classList.remove('active');
+                    document.body.classList.add('dark-mode');
+                }
+                
+                // Set layout
+                if (prefs.layout === 'compact') {
+                    document.getElementById('layout-compact').classList.add('active');
+                    document.getElementById('layout-default').classList.remove('active');
+                    document.body.classList.add('compact-layout');
+                }
+                
+            } catch (error) {
+                console.error('Error loading preferences:', error);
+            }
+        }
+        
+        // Save preferences
+        async function savePreferences(theme, layout) {
+            try {
+                await fetch(`${API_URL}/user/preferences`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ theme, layout }),
+                    credentials: 'include'
+                });
+            } catch (error) {
+                console.error('Error saving preferences:', error);
+            }
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPreferences();
+            
+            // Theme buttons
+            document.getElementById('theme-light').addEventListener('click', () => {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('theme-light').classList.add('active');
+                document.getElementById('theme-dark').classList.remove('active');
+                savePreferences('light', document.body.classList.contains('compact-layout') ? 'compact' : 'default');
+            });
+            
+            document.getElementById('theme-dark').addEventListener('click', () => {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-dark').classList.add('active');
+                document.getElementById('theme-light').classList.remove('active');
+                savePreferences('dark', document.body.classList.contains('compact-layout') ? 'compact' : 'default');
+            });
+            
+            // Layout buttons
+            document.getElementById('layout-default').addEventListener('click', () => {
+                document.body.classList.remove('compact-layout');
+                document.getElementById('layout-default').classList.add('active');
+                document.getElementById('layout-compact').classList.remove('active');
+                savePreferences(document.body.classList.contains('dark-mode') ? 'dark' : 'light', 'default');
+            });
+            
+            document.getElementById('layout-compact').addEventListener('click', () => {
+                document.body.classList.add('compact-layout');
+                document.getElementById('layout-compact').classList.add('active');
+                document.getElementById('layout-default').classList.remove('active');
+                savePreferences(document.body.classList.contains('dark-mode') ? 'dark' : 'light', 'compact');
+            });
+            
+            // Username form
+            document.getElementById('username-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const newUsername = document.getElementById('new-username').value;
+                
+                try {
+                    const response = await fetch(`${API_URL}/user/update-username`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ newUsername }),
+                        credentials: 'include'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        showMessage('username-message', data.message, false);
+                        document.getElementById('new-username').value = '';
+                    } else {
+                        showMessage('username-message', data.error, true);
+                    }
+                } catch (error) {
+                    showMessage('username-message', 'Error updating username', true);
+                }
+            });
+            
+            // Password form
+            document.getElementById('password-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('current-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-new-password').value;
+                
+                if (newPassword !== confirmPassword) {
+                    showMessage('password-message', 'Passwords do not match', true);
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`${API_URL}/user/update-password`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+                        credentials: 'include'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        showMessage('password-message', data.message, false);
+                        document.getElementById('password-form').reset();
+                    } else {
+                        showMessage('password-message', data.error, true);
+                    }
+                } catch (error) {
+                    showMessage('password-message', 'Error updating password', true);
+                }
+            });
+            
+            // Picture upload
+            document.getElementById('new-picture').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const formData = new FormData();
+                formData.append('profilePicture', file);
+                
+                try {
+                    const response = await fetch(`${API_URL}/user/upload-picture`, {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'include'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        document.getElementById('current-picture').src = data.profile_picture;
+                        showMessage('picture-message', 'Profile picture updated!', false);
+                    } else {
+                        showMessage('picture-message', data.error, true);
+                    }
+                } catch (error) {
+                    showMessage('picture-message', 'Error uploading picture', true);
+                }
+            });
+            
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                await fetch(`${API_URL}/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>
