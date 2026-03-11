@@ -325,6 +325,7 @@ Open your browser and navigate to:
 ## Legacy M-Pesa Integration
 
 This version includes the original M-Pesa payment integration. To use M-Pesa:
+
 1. Configure credentials in `backend/.env`
 2. See full M-Pesa documentation in original README sections
 

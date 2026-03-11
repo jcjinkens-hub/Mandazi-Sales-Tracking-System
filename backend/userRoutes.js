@@ -5,6 +5,12 @@ const path = require('path');
 const fs = require('fs');
 const db = require('./database');
 
+// Debug middleware
+router.use((req, res, next) => {
+    console.log(`[UserRoutes] ${req.method} ${req.url}`);
+    next();
+});
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -313,6 +319,41 @@ router.delete('/sales/:id', requireAuth, async (req, res) => {
         });
     } catch (error) {
         console.error('Delete sale error:', error);
+        res.status(500).json({
+            error: 'Server error'
+        });
+    }
+});
+
+// Update a sale
+router.put('/sales/:id', requireAuth, async (req, res) => {
+    try {
+        const {
+            customerName,
+            quantity,
+            price
+        } = req.body;
+
+        if (!customerName || !quantity || !price) {
+            return res.status(400).json({
+                error: 'All fields are required'
+            });
+        }
+
+        if (quantity < 1 || price < 0) {
+            return res.status(400).json({
+                error: 'Invalid quantity or price'
+            });
+        }
+
+        const result = await db.updateSale(req.params.id, req.session.userId, customerName, quantity, price);
+
+        res.json({
+            message: 'Sale updated successfully',
+            total: result.total
+        });
+    } catch (error) {
+        console.error('Update sale error:', error);
         res.status(500).json({
             error: 'Server error'
         });

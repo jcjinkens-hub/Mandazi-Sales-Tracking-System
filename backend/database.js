@@ -330,6 +330,23 @@ function deleteSale(saleId, userId) {
     });
 }
 
+function updateSale(saleId, userId, customerName, quantity, price) {
+    return new Promise((resolve, reject) => {
+        const total = quantity * price;
+        db.run(
+            `UPDATE sales SET customer_name = ?, quantity = ?, price = ?, total = ? WHERE id = ? AND user_id = ?`,
+            [customerName, quantity, price, total, saleId, userId],
+            function(err) {
+                if (err) reject(err);
+                resolve({
+                    success: true,
+                    total
+                });
+            }
+        );
+    });
+}
+
 // User preferences operations
 function getUserPreferences(userId) {
     return new Promise((resolve, reject) => {
@@ -383,6 +400,7 @@ module.exports = {
     getWeeklyEarnings,
     getMonthlyEarnings,
     deleteSale,
+    updateSale,
     getUserPreferences,
     updateUserPreferences
 };

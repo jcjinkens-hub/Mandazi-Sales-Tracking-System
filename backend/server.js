@@ -79,6 +79,11 @@ if (!fs.existsSync(uploadsDir)) {
     });
 }
 
+// Catch-all for 404 errors - must be the last route
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '..', 'frontend', '404.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
