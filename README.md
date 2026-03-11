@@ -10,6 +10,7 @@ A comprehensive sales tracking application for mandazi sellers with user authent
 - **Profile Management**: Custom profile pictures, username changes, password updates
 - **Forgot Password**: Account verification via username and phone number
 - **Login History**: Tracks login/logout times and IP addresses
+- **First-Time Setup**: Guided profile setup for new users with skip option
 
 ### Sales Tracking
 
@@ -19,13 +20,24 @@ A comprehensive sales tracking application for mandazi sellers with user authent
   - Daily Earnings (Today)
   - Weekly Earnings (Last 7 days)
   - Monthly Earnings (Last 30 days)
-- **Sales History**: View and delete past sales
+- **Sales History**: View, filter, and delete past sales
+- **Invoice Generation**: Create professional invoices with QR codes
+- **PDF Reports**: Download sales reports with QR verification codes
 
 ### User Preferences
 
 - **Light/Dark Mode**: Theme preference stored in database
 - **Dashboard Layout**: Default or compact view
 - **Profile Pictures**: Upload JPG/PNG images (max 5MB)
+- **Default Avatar**: Auto-generated gradient avatar for new users
+
+### Modern UI/UX
+
+- **Responsive Design**: Works on all devices (mobile, tablet, desktop)
+- **Vibrant Color Scheme**: Modern gradient-based purple to amber theme
+- **Animated Loading Screen**: Circular company logo with spinning ring
+- **404 Error Page**: Custom offline-friendly error page with reload button
+- **User Guide**: Comprehensive in-app help system
 
 ## System Requirements
 
@@ -42,6 +54,7 @@ Mandazi_Sales_Tracking_System/
 │   ├── database.js            # SQLite database setup
 │   ├── authRoutes.js          # Authentication routes
 │   ├── userRoutes.js          # User/profile routes
+│   ├── mpesaRoutes.js         # M-Pesa integration routes
 │   ├── package.json           # Backend dependencies
 │   └── .env.example           # Environment variables template
 ├── frontend/
@@ -50,6 +63,11 @@ Mandazi_Sales_Tracking_System/
 │   ├── profile.html           # Profile & dashboard
 │   ├── settings.html          # User settings
 │   ├── forgot-password.html   # Password reset
+│   ├── sales.html             # Sales history & reports
+│   ├── guide.html             # User guide & help
+│   ├── 404.html               # Custom 404 error page
+│   ├── profile-setup.html     # First-time user setup
+│   ├── payments.html          # M-Pesa payments tracking
 │   ├── css/
 │   │   └── styles.css        # Global styles
 │   ├── js/
@@ -96,6 +114,9 @@ Open your browser and navigate to:
 
 - **Login**: <http://localhost:3001/login>
 - **Signup**: <http://localhost:3001/signup>
+- **Profile Setup** (first-time users): <http://localhost:3001/profile-setup.html>
+- **User Guide**: <http://localhost:3001/guide.html>
+- **Sales History**: <http://localhost:3001/sales.html>
 
 ## New Authentication System (2024)
 
@@ -170,6 +191,48 @@ Open your browser and navigate to:
 | GET | `/sales` | Get all sales |
 | DELETE | `/sales/:id` | Delete sale |
 | GET | `/revenue` | Get revenue stats |
+
+#### Sales & Reports (prefix: /api/sales)
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| GET | `/` | Get all sales with filters |
+| GET | `/:id` | Get single sale details |
+| POST | `/` | Create new sale |
+| PUT | `/:id` | Update sale |
+| DELETE | `/:id` | Delete sale |
+| GET | `/report` | Generate sales report |
+
+## New Features (2025)
+
+### Invoice & Receipt Generation
+
+- Professional PDF invoices with company branding
+- QR codes for invoice verification
+- Download individual receipts
+- Generate comprehensive sales reports
+
+### User Onboarding
+
+- **First-Time Setup**: Guided profile creation with:
+  - Profile picture upload
+  - Business type selection (Retail, Restaurant, Food Stall, Other)
+  - Business name and location
+  - Skip option for quick access
+
+### Help System
+
+- In-app user guide with step-by-step instructions
+- Categories: Sales, Inventory, Payments, Reports, Profile
+- Pro tips for power users
+- Quick navigation to all features
+
+### Offline Support
+
+- Custom 404 error page with company logo
+- Offline detection with status indicator
+- Auto-redirect when connection restored
+- Reload button for manual refresh
 
 ## User Flows
 

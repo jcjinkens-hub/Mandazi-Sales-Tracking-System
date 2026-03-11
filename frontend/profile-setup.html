@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Setup - Mandazi Sales Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        /* Progress Steps */
+        .progress-container {
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color, #334155);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .step-label {
+            font-size: 12px;
+            margin-top: 8px;
+            color: var(--text-secondary);
+        }
+
+        .step.active .step-label {
+            color: var(--primary);
+        }
+
+        .step.completed .step-label {
+            color: var(--success);
+        }
+
+        .step-line {
+            width: 60px;
+            height: 2px;
+            background: var(--border-color, #334155);
+            margin: 0 -10px;
+            margin-bottom: 24px;
+        }
+
+        .step.completed + .step-line,
+        .step.completed ~ .step-line {
+            background: var(--success);
+        }
+
+        /* Main Container */
+        .setup-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .setup-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid var(--border-color, #334155);
+        }
+
+        .setup-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .setup-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .setup-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .setup-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Form Steps */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Profile Picture Section */
+        .profile-pic-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-pic-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid var(--primary);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-dark);
+        }
+
+        .profile-pic-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-pic-preview svg {
+            width: 60px;
+            height: 60px;
+            color: var(--text-secondary);
+        }
+
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        #profile-pic-input {
+            display: none;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid var(--border-color, #334155);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Business Info */
+        .business-type-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .business-type-option {
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid var(--border-color, #334155);
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .business-type-option:hover {
+            border-color: var(--primary);
+        }
+
+        .business-type-option.selected {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .business-type-option svg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .business-type-option.selected svg {
+            color: var(--success);
+        }
+
+        .business-type-option span {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--border-color, #334155);
+            color: var(--text-secondary);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .btn-skip {
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .btn-skip:hover {
+            color: var(--text-primary);
+        }
+
+        /* Instructions */
+        .instructions-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .instructions-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .instructions-list {
+            list-style: none;
+        }
+
+        .instructions-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .instructions-list li svg {
+            width: 20px;
+            height: 20px;
+            color: var(--success);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .setup-card {
+                padding: 24px;
+            }
+
+            .business-type-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Steps -->
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <span class="step-label">Profile</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <span class="step-label">Business</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <span class="step-label">Complete</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Setup Container -->
+    <div class="setup-container">
+        <div class="setup-card">
+            <div class="setup-header">
+                <img src="assets/images/MSTS_logo_transparent.jpeg" alt="Logo" class="setup-logo">
+                <h1>Welcome!</h1>
+                <p>Let's set up your profile to get started</p>
+            </div>
+
+            <!-- Step 1: Profile Picture & Basic Info -->
+            <div class="form-step active" data-step="1">
+                <div class="profile-pic-section">
+                    <div class="profile-pic-preview" id="profile-pic-preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <label for="profile-pic-input" class="upload-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Upload Photo
+                    </label>
+                    <input type="file" id="profile-pic-input" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="full-name" placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+254 700 000 000">
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-ghost btn-skip" onclick="skipSetup()">Skip for now</button>
+                    <button class="btn btn-primary" onclick="nextStep(1)">
+                        Continue
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Business Info -->
+            <div class="form-step" data-step="2">
+                <div class="instructions-card">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Tell us about your business
+                    </h3>
+                    <ul class="instructions-list">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Select your business type to customize your experience
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Add your business name and location
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label>Business Type</label>
+                    <div class="business-type-grid">
+                        <div class="business-type-option" data-type="retail" onclick="selectBusinessType(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                            <span>Retail Shop</span>
+                        </div>
+                        <div class="business-type-option" data-type="restaurant" onclick="selectBusinessType(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                            <span>Restaurant</span>
+                        </div>
+                        <div class="business-type-option" data-type="food_stall" onclick="selectBusinessType(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path></svg>
+                            <span>Food Stall</span>
+                        </div>
+                        <div class="business-type-option" data-type="other" onclick="selectBusinessType(this)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <span>Other</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Business Name</label>
+                    <input type="text" id="business-name" placeholder="Enter your business name">
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="location" placeholder="e.g., Nairobi, Kenya">
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-ghost" onclick="prevStep(2)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep(2)">
+                        Continue
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Complete -->
+            <div class="form-step" data-step="3">
+                <div class="instructions-card">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Getting Started Guide
+                    </h3>
+                    <ul class="instructions-list">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <strong>Add Sales:</strong> Use the sales form to record each mandazi sale
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <strong>Track Inventory:</strong> Keep track of your daily stock
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <strong>View Reports:</strong> Check your sales history and generate invoices
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <strong>M-Pesa Integration:</strong> Track all your M-Pesa transactions
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-ghost" onclick="prevStep(3)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="completeSetup()">
+                        Get Started
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let profileData = {
+            profilePic: null,
+            fullName: '',
+            phone: '',
+            businessType: '',
+            businessName: '',
+            location: ''
+        };
+
+        // Profile picture upload
+        document.getElementById('profile-pic-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileData.profilePic = e.target.result;
+                    document.getElementById('profile-pic-preview').innerHTML = 
+                        `<img src="${e.target.result}" alt="Profile">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Business type selection
+        function selectBusinessType(element) {
+            document.querySelectorAll('.business-type-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            profileData.businessType = element.dataset.type;
+        }
+
+        // Navigate steps
+        function nextStep(step) {
+            // Validate current step
+            if (step === 1) {
+                profileData.fullName = document.getElementById('full-name').value;
+                profileData.phone = document.getElementById('phone').value;
+            } else if (step === 2) {
+                profileData.businessName = document.getElementById('business-name').value;
+                profileData.location = document.getElementById('location').value;
+            }
+
+            // Update progress
+            document.querySelector(`.step[data-step="${step}"]`).classList.add('completed');
+            document.querySelector(`.step[data-step="${step}"]`).classList.remove('active');
+            
+            currentStep = step + 1;
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+        }
+
+        function prevStep(step) {
+            document.querySelector(`.step[data-step="${step}"]`).classList.remove('active');
+            document.querySelector(`.step[data-step="${step - 1}"]`).classList.remove('completed');
+            document.querySelector(`.step[data-step="${step - 1}"]`).classList.add('active');
+            
+            currentStep = step - 1;
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+        }
+
+        // Skip setup
+        function skipSetup() {
+            completeSetup();
+        }
+
+        // Complete setup
+        async function completeSetup() {
+            // Save user preferences
+            try {
+                await fetch('http://localhost:3000/api/user/preferences', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        ...profileData,
+                        setupComplete: true
+                    })
+                });
+            } catch (e) {
+                console.log('Saving locally');
+            }
+
+            // Mark setup as complete
+            localStorage.setItem('setupComplete', 'true');
+            
+            // Redirect to profile
+            window.location.href = 'profile.html';
+        }
+    </script>
+</body>
+</html>

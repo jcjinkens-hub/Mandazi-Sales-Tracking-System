@@ -1,9 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="avatarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
   <!-- Background Circle -->
-  <circle cx="50" cy="50" r="50" fill="#e5e7eb"/>
+  <circle cx="100" cy="100" r="95" fill="url(#bgGradient)" stroke="url(#avatarGradient)" stroke-width="4"/>
   
   <!-- Person Icon -->
-  <circle cx="50" cy="35" r="18" fill="#9ca3af"/>
-  <path d="M50 60 C30 60 20 70 20 80 L80 80 C80 70 70 60 50 60 Z" fill="#9ca3af"/>
+  <!-- Head -->
+  <circle cx="100" cy="75" r="30" fill="url(#avatarGradient)"/>
+  
+  <!-- Body -->
+  <path d="M50 160 Q50 115 100 115 Q150 115 150 160" fill="url(#avatarGradient)"/>
+  
+  <!-- Smile -->
+  <path d="M85 80 Q100 95 115 80" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Eyes -->
+  <circle cx="88" cy="68" r="4" fill="white"/>
+  <circle cx="112" cy="68" r="4" fill="white"/>
 </svg>

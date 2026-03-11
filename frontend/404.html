@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found - Mandazi Sales Tracker</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Modern Vibrant Color Scheme */
+      :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --accent-color: #f59e0b;
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --bg-dark: #0f172a;
+        --card-bg: #1e293b;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-primary);
+        overflow: hidden;
+      }
+
+      /* Animated Background */
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+          radial-gradient(
+            circle at 20% 80%,
+            rgba(102, 126, 234, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(118, 75, 162, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(245, 158, 11, 0.1) 0%,
+            transparent 30%
+          );
+        animation: backgroundPulse 8s ease-in-out infinite;
+      }
+
+      @keyframes backgroundPulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      .error-container {
+        text-align: center;
+        z-index: 10;
+        padding: 40px;
+        max-width: 600px;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Floating Animation for Logo */
+      .logo-container {
+        margin-bottom: 40px;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .logo-container img {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow:
+          0 0 60px rgba(102, 126, 234, 0.5),
+          0 0 100px rgba(118, 75, 162, 0.3);
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        background: white;
+        padding: 20px;
+      }
+
+      .error-code {
+        font-size: 120px;
+        font-weight: 800;
+        line-height: 1;
+        background: linear-gradient(135deg, #667eea, #764ba2, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+        text-shadow: 0 0 60px rgba(102, 126, 234, 0.5);
+        animation: shimmer 2s infinite;
+        background-size: 200% 200%;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .error-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+      }
+
+      .error-message {
+        font-size: 18px;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        line-height: 1.6;
+      }
+
+      .error-message span {
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+
+      /* Button Styles */
+      .button-container {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-reload {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-reload:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+      }
+
+      .btn-reload:active {
+        transform: translateY(-1px);
+      }
+
+      .btn-reload svg {
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .btn-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .btn-home:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-3px);
+      }
+
+      .btn-home svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      /* Decorative Elements */
+      .decorative-dots {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .dot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(102, 126, 234, 0.4);
+        border-radius: 50%;
+        animation: dotFloat 4s ease-in-out infinite;
+      }
+
+      .dot:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+      .dot:nth-child(2) {
+        top: 60%;
+        left: 5%;
+        animation-delay: 0.5s;
+      }
+      .dot:nth-child(3) {
+        top: 80%;
+        left: 15%;
+        animation-delay: 1s;
+      }
+      .dot:nth-child(4) {
+        top: 30%;
+        right: 10%;
+        animation-delay: 1.5s;
+      }
+      .dot:nth-child(5) {
+        top: 70%;
+        right: 5%;
+        animation-delay: 2s;
+      }
+      .dot:nth-child(6) {
+        top: 40%;
+        right: 15%;
+        animation-delay: 2.5s;
+      }
+
+      @keyframes dotFloat {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 0.6;
+        }
+        50% {
+          transform: translateY(-20px) scale(1.2);
+          opacity: 1;
+        }
+      }
+
+      /* Offline indicator */
+      .offline-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-radius: 20px;
+        color: #ef4444;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 24px;
+      }
+
+      .offline-badge .dot-pulse {
+        width: 8px;
+        height: 8px;
+        background: #ef4444;
+        border-radius: 50%;
+        animation: dotPulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes dotPulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(1.5);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .error-code {
+          font-size: 80px;
+        }
+        .error-title {
+          font-size: 24px;
+        }
+        .error-message {
+          font-size: 16px;
+        }
+        .logo-container img {
+          width: 140px;
+          height: 140px;
+        }
+        .button-container {
+          flex-direction: column;
+          align-items: center;
+        }
+        .btn-reload,
+        .btn-home {
+          width: 100%;
+          max-width: 280px;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Decorative Elements -->
+    <div class="decorative-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="error-container">
+      <!-- Offline Badge -->
+      <div class="offline-badge">
+        <span class="dot-pulse"></span>
+        <span id="status-text">No Internet Connection</span>
+      </div>
+
+      <!-- Logo -->
+      <div class="logo-container">
+        <img
+          src="assets/images/MSTS_logo_transparent.jpeg"
+          alt="Mandazi Sales Tracker Logo"
+        />
+      </div>
+
+      <!-- Error Code -->
+      <div class="error-code">404</div>
+
+      <!-- Error Message -->
+      <h1 class="error-title">Page Not Found</h1>
+      <p class="error-message">
+        Oops! The page you're looking for seems to have wandered off.
+        <span>Let's get you back on track!</span>
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="button-container">
+        <button class="btn-reload" onclick="reloadPage()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 2v6h-6"></path>
+            <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+            <path d="M3 22v-6h6"></path>
+            <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
+          </svg>
+          Try Again
+        </button>
+        <a href="index.html" class="btn-home">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Go Home
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // Check if online or offline
+      function updateStatus() {
+        const statusText = document.getElementById("status-text");
+        if (navigator.onLine) {
+          statusText.textContent = "Page Not Found";
+        } else {
+          statusText.textContent = "No Internet Connection";
+        }
+      }
+
+      // Listen for online/offline events
+      window.addEventListener("online", updateStatus);
+      window.addEventListener("offline", updateStatus);
+
+      // Initial status check
+      updateStatus();
+
+      // Reload page function
+      function reloadPage() {
+        const btn = document.querySelector(".btn-reload");
+        btn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 2v6h-6"></path>
+                    <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+                    <path d="M3 22v-6h6"></path>
+                    <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
+                </svg>
+                Reloading...
+            `;
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      }
+
+      // Auto-redirect when back online
+      window.addEventListener("online", () => {
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>

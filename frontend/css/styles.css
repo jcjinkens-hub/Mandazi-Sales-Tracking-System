@@ -644,8 +644,8 @@ tr:hover td {
 
 .loading-spinner {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -662,7 +662,7 @@ tr:hover td {
     border-left-color: #ef4444;
     border-radius: 50%;
     animation: spin 1.2s linear infinite;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.5), 0 0 60px rgba(118, 75, 162, 0.3);
 }
 
 @keyframes spin {
@@ -677,20 +677,22 @@ tr:hover td {
 
 .loading-logo-container {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: white;
     border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+    z-index: 10;
 }
 
 .loading-logo {
-    width: 40px;
-    height: 40px;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
+    border-radius: 50%;
     animation: none;
 }
 
